@@ -35,7 +35,11 @@ class listener implements EventSubscriberInterface
 	/**
 	* Constructor
 	*
-	* @param \phpbb\user $user, \phpbb\template\template $template
+	* @param \phpbb\auth\auth					$auth				Auth object
+	* @param \phpbb\request\request				$request			Request object
+	* @param \phpbb\template\template           $template       	Template object
+	* @param \phpbb\user                        $user           	User object
+	* @access public
 	*/
 	public function __construct(
 			\phpbb\auth\auth $auth,
@@ -84,10 +88,6 @@ class listener implements EventSubscriberInterface
 		$event['permissions'] = $permissions;
 	}
 
-	/*
-	* inject email for anonymous postings
-	* it is strictly used as a check against SFS
-	*/
 	public function topic_data_topic_desc($event)
 	{
 		$forum_id = $event['forum_id'];
@@ -98,6 +98,11 @@ class listener implements EventSubscriberInterface
 		if ($this->auth->acl_get('f_topic_desc', $forum_id) && ($mode == 'post' || ($mode == 'edit' && $post_data['topic_first_post_id'] == $post_data['post_id'])))
 		{
 			$this->user->add_lang_ext('rmcgirr83/topicdescription', 'common');
+			// we need to set the variable upon posting only...only forum table is queried
+			if ($mode == 'post')
+			{
+				$post_data['topic_desc'] = '';
+			}
 			$page_data['TOPIC_DESC'] = $this->request->variable('topic_desc', $post_data['topic_desc'], true);
 			$page_data['S_DESC_TOPIC'] = true;
 		}
