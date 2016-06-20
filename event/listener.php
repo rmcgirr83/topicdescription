@@ -146,7 +146,7 @@ class listener implements EventSubscriberInterface
 		if (!empty($row['topic_desc']))
 		{
 			$topic_row = $event['topic_row'];
-			$topic_row['TOPIC_TITLE'] = $topic_row['TOPIC_TITLE'] . ' - ' . censor_text($row['topic_desc']);
+			$topic_row['TOPIC_DESC'] = censor_text($row['topic_desc']);
 			$event['topic_row'] = $topic_row;
 		}
 	}
@@ -157,7 +157,7 @@ class listener implements EventSubscriberInterface
 		if ($event['show_results'] == 'topics' && !empty($row['topic_desc']))
 		{
 			$tpl_array = $event['tpl_ary'];
-			$tpl_array['TOPIC_TITLE'] = $tpl_array['TOPIC_TITLE'] . ' - ' . censor_text($row['topic_desc']);
+			$tpl_array['TOPIC_DESC'] = censor_text($row['topic_desc']);
 			$event['tpl_ary'] = $tpl_array;
 		}
 	}
