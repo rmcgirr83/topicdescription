@@ -66,6 +66,7 @@ class listener implements EventSubscriberInterface
 			'core.permissions'						=> 'add_permission',
 			'core.posting_modify_template_vars'		=> 'topic_data_topic_desc',
 			'core.posting_modify_submit_post_before'		=> 'topic_desc_add',
+			'core.posting_modify_message_text'		=> 'modify_message_text',
 			'core.submit_post_modify_sql_data'		=> 'submit_post_modify_sql_data',
 			'core.viewtopic_modify_page_title'		=> 'topic_desc_add_viewtopic',
 			'core.viewforum_modify_topicrow'		=> 'modify_topicrow',
@@ -113,9 +114,6 @@ class listener implements EventSubscriberInterface
 
 	public function topic_desc_add($event)
 	{
-		$forum_id = $event['forum_id'];
-		$post_data = $event['post_data'];
-
 		$event['data'] = array_merge($event['data'], array(
 			'topic_desc'	=> $this->request->variable('topic_desc', '', true),
 		));
@@ -138,6 +136,13 @@ class listener implements EventSubscriberInterface
 	{
 		$topic_data = $event['topic_data'];
 		$this->template->assign_var('TOPIC_DESC',censor_text($topic_data['topic_desc']));
+	}
+
+	public function modify_message_text($event)
+	{
+		$event['post_data'] = array_merge($event['post_data'], array(
+			'topic_desc'	=> $this->request->variable('topic_desc', '', true),
+		));
 	}
 
 	public function modify_topicrow($event)
