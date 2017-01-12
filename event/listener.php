@@ -159,8 +159,9 @@ class listener implements EventSubscriberInterface
 	public function search_modify_tpl_ary($event)
 	{
 		$row = $event['row'];
-		if ($event['show_results'] == 'topics' && !empty($row['topic_desc']))
+		if (!empty($row['topic_desc']))
 		{
+			$this->user->add_lang_ext('rmcgirr83/topicdescription', 'common');
 			$tpl_array = $event['tpl_ary'];
 			$tpl_array['TOPIC_DESC'] = censor_text($row['topic_desc']);
 			$event['tpl_ary'] = $tpl_array;
