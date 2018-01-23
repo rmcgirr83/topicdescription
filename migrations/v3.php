@@ -21,7 +21,7 @@ class v3 extends \phpbb\db\migration\migration
 		return array(
 			'change_columns'    => array(
 				$this->table_prefix . 'topics'        => array(
-					'topic_desc'	=> array('TEXT_UNI', NULL),
+					'topic_desc'	=> array('TEXT_UNI', null),
 				),
 			),
 		);
