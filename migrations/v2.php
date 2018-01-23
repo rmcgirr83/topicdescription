@@ -2,7 +2,7 @@
 /**
 *
 * @package Topic description
-* @copyright (c) 2016 Rich McGirr (RMcGirr83)
+* @copyright (c) 2018 Rich McGirr (RMcGirr83)
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -21,7 +21,7 @@ class v2 extends \phpbb\db\migration\migration
 		return array(
 			'change_columns'    => array(
 				$this->table_prefix . 'topics'        => array(
-					'topic_desc'	=> array('TEXT_UNI', ''),
+					'topic_desc'	=> array('TEXT_UNI', null),
 				),
 			),
 		);
