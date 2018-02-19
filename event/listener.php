@@ -97,7 +97,7 @@ class listener implements EventSubscriberInterface
 		$mode = $event['mode'];
 		$post_data = $event['post_data'];
 		$page_data = $event['page_data'];
-
+		$post_data['topic_desc'] = (!empty($post_data['topic_desc'])) ? $post_data['topic_desc'] : '';
 		if ($this->auth->acl_get('f_topic_desc', $event['forum_id']) && ($mode == 'post' || ($mode == 'edit' && $post_data['topic_first_post_id'] == $post_data['post_id'])))
 		{
 			$this->user->add_lang_ext('rmcgirr83/topicdescription', 'common');
