@@ -37,7 +37,7 @@ class v1 extends \phpbb\db\migration\migration
 			),
 		);
 	}
-	
+
 	public function update_data()
 	{
 		return array(
