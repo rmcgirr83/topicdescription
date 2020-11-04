@@ -5,7 +5,7 @@ phpBB 3.1 Topic Description
 
 Add the possibility of being able to describe topics, in posting page. Based on permissions per forum.  Descriptions are displayed in viewtopic, viewforum, search results (only display results as topic) and MCP forum.  Based on the 3.0 Mod of the same name.
 
-[![Build Status](https://travis-ci.org/rmcgirr83/topicdescription.svg?branch=master)](https://travis-ci.org/rmcgirr83/topicdescription)
+[![Build Status](https://travis-ci.com/rmcgirr83/topicdescription.svg?branch=master)](https://travis-ci.com/rmcgirr83/topicdescription)
 
 ## Installation
 
