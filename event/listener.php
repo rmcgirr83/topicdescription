@@ -43,11 +43,11 @@ class listener implements EventSubscriberInterface
 	/**
 	* Constructor
 	*
-	* @param \phpbb\auth\auth					$auth				Auth object
-	* @param \phpbb\request\request				$request			Request object
-	* @param \phpbb\template\template           $template       	Template object
-	* @param \phpbb\language\language           $language          	Language object
-	* @param \phpbb\user						$user				User object
+	* @param auth		$auth				Auth object
+	* @param request	$request			Request object
+	* @param template	$template       	Template object
+	* @param language	$language          	Language object
+	* @param user		$user				User object
 	* @access public
 	*/
 	public function __construct(

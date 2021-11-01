@@ -1,7 +1,8 @@
-Topic Description
-===============
+# ![Topic Description](https://imattpro.github.io/logo/search.png "Topic Description") Topic Description for phpBB3
 
 Add the possibility of being able to describe topics, in posting page. Based on permissions per forum.  Descriptions are displayed in viewtopic, viewforum, search results (only display results as topic) and MCP forum.  Based on the 3.0 Mod of the same name.
+
+[![Build Status](https://github.com/rmcgirr83/topicdescription/workflows/Tests/badge.svg)](https://github.com/rmcgirr83/topicdescription/actions)
 
 ## Installation
 
