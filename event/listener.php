@@ -76,6 +76,7 @@ class listener implements EventSubscriberInterface
 		return array(
 			'core.acp_extensions_run_action_after'	=>	'acp_extensions_run_action_after',
 			'core.permissions'						=> 'add_permission',
+			'core.user_setup_after'					=> 'user_setup_after',
 			'core.posting_modify_message_text'		=> 'modify_message_text',
 			'core.posting_modify_submission_errors'		=> 'topic_desc_add_to_post_data',
 			'core.posting_modify_submit_post_before'	=> 'topic_desc_add',
@@ -88,7 +89,7 @@ class listener implements EventSubscriberInterface
 		);
 	}
 
-	/* Display additional metdate in extension details
+	/* Display additional metdata in extension details
 	*
 	* @param $event			event object
 	* @param return null
@@ -116,10 +117,37 @@ class listener implements EventSubscriberInterface
 		$event['permissions'] = $permissions;
 	}
 
+	/**
+	 * Add language
+	 *
+	 * @param object $event The event object
+	 * @return null
+	 * @access public
+	 */
+	public function user_setup_after($event)
+	{
+		$this->language->add_lang('common', 'rmcgirr83/topicdescription');
+	}
+
+	public function topic_data_topic_desc($event)
+	{
+		$mode = $event['mode'];
+		$post_data = $event['post_data'];
+		$page_data = $event['page_data'];
+		$topic_desc = (!empty($post_data['topic_desc'])) ? $post_data['topic_desc'] : '';
+
+		if ($this->auth->acl_get('f_topic_desc', $event['forum_id']) && ($mode == 'post' || ($mode == 'edit' && $post_data['topic_first_post_id'] == $post_data['post_id'])))
+		{
+			$page_data['TOPIC_DESC'] = $this->request->variable('topic_desc', $topic_desc, true);
+			$page_data['S_DESC_TOPIC'] = true;
+		}
+
+		$event['page_data']	= $page_data;
+	}
+
 	public function topic_desc_add_to_post_data($event)
 	{
 		$topic_desc = $this->request->variable('topic_desc', '', true);
-		$this->language->add_lang('common', 'rmcgirr83/topicdescription');
 		$error = [];
 		/**
 		 * Replace Emojis and other 4bit UTF-8 chars not allowed by MySQL to UCR/NCR.
@@ -170,7 +198,7 @@ class listener implements EventSubscriberInterface
 	public function submit_post_modify_sql_data($event)
 	{
 		$mode = $event['post_mode'];
-		$topic_desc = $event['data']['topic_desc'];
+		$topic_desc = !empty($event['data']['topic_desc']) ? $event['data']['topic_desc'] : '';
 		$data_sql = $event['sql_data'];
 		$topic_desc = truncate_string($topic_desc, 120);
 
@@ -180,22 +208,6 @@ class listener implements EventSubscriberInterface
 		}
 
 		$event['sql_data'] = $data_sql;
-	}
-
-	public function topic_data_topic_desc($event)
-	{
-		$mode = $event['mode'];
-		$post_data = $event['post_data'];
-		$page_data = $event['page_data'];
-		$topic_desc = (!empty($post_data['topic_desc'])) ? $post_data['topic_desc'] : '';
-
-		if ($this->auth->acl_get('f_topic_desc', $event['forum_id']) && ($mode == 'post' || ($mode == 'edit' && $post_data['topic_first_post_id'] == $post_data['post_id'])))
-		{
-			$page_data['TOPIC_DESC'] = $this->request->variable('topic_desc', $topic_desc, true);
-			$page_data['S_DESC_TOPIC'] = true;
-		}
-
-		$event['page_data']	= $page_data;
 	}
 
 	public function topic_desc_add_viewtopic($event)
