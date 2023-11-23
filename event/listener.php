@@ -18,6 +18,7 @@ use phpbb\request\request;
 use phpbb\template\template;
 use phpbb\language\language;
 use phpbb\user;
+use s9e\TextFormatter\Configurator;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -213,7 +214,7 @@ class listener implements EventSubscriberInterface
 	public function topic_desc_add_viewtopic($event)
 	{
 		$topic_data = $event['topic_data'];
-		$this->template->assign_var('TOPIC_DESC',censor_text($topic_data['topic_desc']));
+		$this->template->assign_var('TOPIC_DESC',$this->make_link($topic_data['topic_desc']));
 	}
 
 	public function modify_topicrow($event)
@@ -223,7 +224,7 @@ class listener implements EventSubscriberInterface
 		if (!empty($row['topic_desc']))
 		{
 			$topic_row = $event['topic_row'];
-			$topic_row['TOPIC_DESC'] = censor_text($row['topic_desc']);
+			$topic_row['TOPIC_DESC'] = $this->make_link($row['topic_desc']);
 			$event['topic_row'] = $topic_row;
 		}
 	}
@@ -235,8 +236,21 @@ class listener implements EventSubscriberInterface
 		if ($event['show_results'] == 'topics' && !empty($row['topic_desc']))
 		{
 			$tpl_array = $event['tpl_ary'];
-			$tpl_array['TOPIC_DESC'] = censor_text($row['topic_desc']);
+			$tpl_array['TOPIC_DESC'] = $this->make_link($row['topic_desc']);
 			$event['tpl_ary'] = $tpl_array;
 		}
+	}
+
+	private function make_link($text)
+	{
+			$configurator = new Configurator;
+			$configurator->Autolink->matchWww = true;
+
+			// Get an instance of the parser and the renderer
+			extract($configurator->finalize());
+			$text = censor_text($text);
+			$xml  = $parser->parse($text);
+			$html = $renderer->render($xml);
+			return $html;
 	}
 }
